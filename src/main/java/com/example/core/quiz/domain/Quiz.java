@@ -12,6 +12,7 @@ import org.hibernate.annotations.SQLRestriction;//단어 삭제된 것들 제외
 public class Quiz {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(unique = true, nullable = false)
     private Long id;
 
     //FK : 단어DB에 저장된 테이터 관리자가 조회api호출해서 wordId 확보 후 퀴즈 등록 시 다른 컬럼들과 동일하게 body에서 받아올 거임.
