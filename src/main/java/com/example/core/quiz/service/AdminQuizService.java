@@ -68,4 +68,11 @@ public class AdminQuizService {
                 .build();
         quizRepository.save(newQuiz);
     }
+
+    //관리자용 퀴즈 삭제
+    @Transactional
+    public void deleteQuiz(Long quizId) {
+        Quiz quiz = quizRepository.findById(quizId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 퀴즈입니다."));
+        quiz.delete();
+    }
 }
