@@ -4,6 +4,7 @@ import com.example.core.quiz.domain.Quiz;
 import com.example.core.quiz.dto.AdminQuizResponse;
 import com.example.core.quiz.dto.AdminQuizPageResponse;
 import com.example.core.quiz.repository.QuizRepository;
+import com.example.core.quiz.dto.AdminQuizRequest;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,5 +50,22 @@ public class AdminQuizService {
                 .build();
         return finalResponse;
 
+    }
+
+    //관리자용 퀴즈 등록
+    @Transactional
+    public void createQuiz(AdminQuizRequest request, Long adminId) {
+        Quiz newQuiz = Quiz.builder()
+                .wordId(request.getWordId())
+                .adminId(adminId)
+                .question(request.getQuestion())
+                .answerNum(request.getAnswerNum())
+                .option1(request.getOption1())
+                .option2(request.getOption2())
+                .option3(request.getOption3())
+                .option4(request.getOption4())
+                .explanation(request.getExplanation())
+                .build();
+        quizRepository.save(newQuiz);
     }
 }
