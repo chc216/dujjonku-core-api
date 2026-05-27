@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.core.report.mapper.ReportMapper">
+
+    <select id="findById" resultType="com.example.core.report.dto.WordInfoDto">
+        SELECT
+            id,
+            word_name,
+            meaning AS definition,
+            example,
+            trend
+        FROM word
+        WHERE id = #{wordId}
+    </select>
+
+    <select id="findFrequenciesList" resultType="com.example.core.report.dto.WordDailyFrequencyDto">
+        SELECT
+            record_date,
+            frequency
+        FROM word_daily_frequency
+        WHERE word_id = #{wordId}
+          AND record_date > DATE_SUB(CURDATE(), INTERVAL #{dayCount} DAY)
+        ORDER BY record_date DESC
+    </select>
+
+</mapper>
