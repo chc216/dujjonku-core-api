@@ -1,9 +1,9 @@
-package com.example.core.report.service;
+package com.example.core.word.service;
 
-import com.example.core.report.dto.ReportResponseDto;
-import com.example.core.report.dto.WordDailyFrequencyDto;
-import com.example.core.report.dto.WordInfoDto;
-import com.example.core.report.mapper.ReportMapper;
+import com.example.core.word.reportdto.ReportResponseDto;
+import com.example.core.word.reportdto.WordDailyFrequencyDto;
+import com.example.core.word.reportdto.WordInfoDto;
+import com.example.core.word.mapper.ReportMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

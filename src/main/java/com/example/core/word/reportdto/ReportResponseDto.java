@@ -1,6 +1,5 @@
-package com.example.core.report.dto;
+package com.example.core.word.reportdto;
 
-import lombok.Builder;
 import lombok.Getter;
 
 import java.util.Map;

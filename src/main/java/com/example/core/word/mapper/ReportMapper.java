@@ -1,7 +1,7 @@
-package com.example.core.report.mapper;
+package com.example.core.word.mapper;
 
-import com.example.core.report.dto.WordDailyFrequencyDto;
-import com.example.core.report.dto.WordInfoDto;
+import com.example.core.word.reportdto.WordDailyFrequencyDto;
+import com.example.core.word.reportdto.WordInfoDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
