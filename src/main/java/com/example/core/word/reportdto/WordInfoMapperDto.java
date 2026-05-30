@@ -4,10 +4,9 @@ import lombok.Getter;
 
 //mapper -> service
 @Getter
-public class WordInfoDto {
+public class WordInfoMapperDto {
     private Long id;
-    private String wordName;
-    private String definition;
+    private String name;
+    private String meaning;
     private String example;
-    private String trend;
 }

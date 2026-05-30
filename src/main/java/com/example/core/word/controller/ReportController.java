@@ -20,7 +20,6 @@ public class ReportController {
 
     @GetMapping("/report/{id}")
     public ReportResponseDto report(@PathVariable("id") String id) {
-        System.out.println("id = " + id);
         return service.getWordReport(id);
     }
 }

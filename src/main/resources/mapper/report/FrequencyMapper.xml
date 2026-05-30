@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.core.word.mapper.FrequencyMapper">
+
+    <select id="getFrequencyList" resultType="java.lang.Integer">
+        SELECT
+            frequency
+        FROM word_frequency
+        WHERE word_id = #{id}
+          AND record_date > DATE_SUB(CURDATE(), INTERVAL #{count} DAY)
+        ORDER BY record_date DESC
+    </select>
+
+</mapper>

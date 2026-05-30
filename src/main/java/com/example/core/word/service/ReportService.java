@@ -1,9 +1,12 @@
 package com.example.core.word.service;
 
+import com.example.core.word.domain.Frequency;
+import com.example.core.word.domain.Word;
+import com.example.core.word.mapper.WordMapper;
 import com.example.core.word.reportdto.ReportResponseDto;
-import com.example.core.word.reportdto.WordDailyFrequencyDto;
-import com.example.core.word.reportdto.WordInfoDto;
-import com.example.core.word.mapper.ReportMapper;
+import com.example.core.word.mapper.FrequencyMapper;
+import com.example.core.word.reportdto.WordInfoMapperDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,38 +14,29 @@ import java.util.*;
 
 @Service
 public class ReportService {
-    private final ReportMapper reportMapper;
+    private final FrequencyMapper frequencyMapper;
+    private final WordMapper wordMapper;
 
     @Autowired
-    public ReportService(ReportMapper reportMapper) {
-        this.reportMapper = reportMapper;
+    public ReportService(FrequencyMapper frequencyMapper, WordMapper wordMapper) {
+        this.frequencyMapper = frequencyMapper;
+        this.wordMapper = wordMapper;
     }
 
-    public ReportResponseDto getWordReport(String wordId) {
-        Long id = Long.valueOf(wordId);
-        WordInfoDto wordInfoDto = reportMapper.findById(id);
-
-        List<WordDailyFrequencyDto> dailyList = reportMapper.findFrequenciesList(id, 84);
-        Map<String, Integer> weeklyList = convertDailyListToWeekly(dailyList);
-
-        return new ReportResponseDto(wordInfoDto, weeklyList);
+    public ReportResponseDto getWordReport(String id) {
+        Long wordId = Long.valueOf(id);
+        WordInfoMapperDto wordInfoMapperDto = wordMapper.findById(wordId);
+        List<Integer> freqList = frequencyMapper.getFrequencyList(84, wordId);
+        Frequency frequency = new Frequency(freqList);
+        Word word = Word
+                .builder()
+                .id(wordInfoMapperDto.getId())
+                .name(wordInfoMapperDto.getName())
+                .meaning(wordInfoMapperDto.getMeaning())
+                .example(wordInfoMapperDto.getExample())
+                .frequency(frequency).build();
+        String trend = word.calculateTrend();
+        List<Integer> weeklyList = word.getWeeklyFrequency();
+        return new ReportResponseDto(word, trend,weeklyList);
     }
-
-    private Map<String, Integer> convertDailyListToWeekly(List<WordDailyFrequencyDto> list) {
-        Map<String, Integer> result = new LinkedHashMap<>();
-        for (int i = 1; i <= 12; i++) {
-            result.put("week" + i + "ago", 0);
-        }
-
-        for (int i = 0; i < list.size(); i++) {
-            int week = i / 7 + 1;
-            String key = "week" + week + "ago";
-            int tmp = result.get(key);
-            tmp += list.get(i).getFrequency();
-            result.put(key, tmp);
-        }
-        return result;
-    }
-
-
 }
