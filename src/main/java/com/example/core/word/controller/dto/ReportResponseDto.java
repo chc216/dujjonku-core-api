@@ -1,4 +1,4 @@
-package com.example.core.word.reportdto;
+package com.example.core.word.controller.dto;
 
 import com.example.core.word.domain.Word;
 import lombok.Getter;

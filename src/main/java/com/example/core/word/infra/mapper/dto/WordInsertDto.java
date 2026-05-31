@@ -1,6 +1,5 @@
-package com.example.core.word.crawlingdto;
+package com.example.core.word.infra.mapper.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter

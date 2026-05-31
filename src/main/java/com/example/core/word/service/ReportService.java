@@ -2,13 +2,13 @@ package com.example.core.word.service;
 
 import com.example.core.word.domain.Frequency;
 import com.example.core.word.domain.Word;
-import com.example.core.word.mapper.WordMapper;
-import com.example.core.word.reportdto.ReportResponseDto;
-import com.example.core.word.mapper.FrequencyMapper;
-import com.example.core.word.reportdto.WordInfoMapperDto;
-import lombok.RequiredArgsConstructor;
+import com.example.core.word.infra.mapper.WordMapper;
+import com.example.core.word.controller.dto.ReportResponseDto;
+import com.example.core.word.infra.mapper.FrequencyMapper;
+import com.example.core.word.infra.mapper.dto.WordInfoMapperDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -23,6 +23,7 @@ public class ReportService {
         this.wordMapper = wordMapper;
     }
 
+    @Transactional
     public ReportResponseDto getWordReport(String id) {
         Long wordId = Long.valueOf(id);
         WordInfoMapperDto wordInfoMapperDto = wordMapper.findById(wordId);

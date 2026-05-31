@@ -1,4 +1,4 @@
-package com.example.core.word.reportdto;
+package com.example.core.word.infra.mapper.dto;
 
 import lombok.Builder;
 import lombok.Getter;

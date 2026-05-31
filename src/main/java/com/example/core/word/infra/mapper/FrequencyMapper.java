@@ -1,4 +1,4 @@
-package com.example.core.word.mapper;
+package com.example.core.word.infra.mapper;
 
 import com.example.core.word.domain.Frequency;
 import org.apache.ibatis.annotations.Mapper;

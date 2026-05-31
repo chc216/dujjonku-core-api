@@ -1,8 +1,7 @@
-package com.example.core.word.mapper;
+package com.example.core.word.infra.mapper;
 
-import com.example.core.word.crawlingdto.WordInsertDto;
-import com.example.core.word.domain.Word;
-import com.example.core.word.reportdto.WordInfoMapperDto;
+import com.example.core.word.infra.mapper.dto.WordInsertDto;
+import com.example.core.word.infra.mapper.dto.WordInfoMapperDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
