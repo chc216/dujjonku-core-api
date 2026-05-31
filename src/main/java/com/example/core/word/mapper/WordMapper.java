@@ -1,5 +1,6 @@
 package com.example.core.word.mapper;
 
+import com.example.core.word.crawlingdto.WordInsertDto;
 import com.example.core.word.domain.Word;
 import com.example.core.word.reportdto.WordInfoMapperDto;
 import org.apache.ibatis.annotations.Mapper;
@@ -9,5 +10,6 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface WordMapper {
     WordInfoMapperDto findById(@Param("id") Long id);
-
+    Long findByName(String name);
+    Long saveWord(WordInsertDto dto);
 }

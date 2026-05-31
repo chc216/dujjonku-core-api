@@ -13,4 +13,15 @@
         WHERE id = #{id}
     </select>
 
+    <select id="findByName" resultType="java.lang.Long">
+        SELECT
+            id
+        FROM word
+        WHERE name = #{name}
+    </select>
+
+    <insert id="saveWord" parameterType="com.example.core.word.crawlingdto.WordSaveRequest" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO word (name, meaning, example) VALUES (#{name}, #{meaning}, #{example})
+    </insert>
+
 </mapper>

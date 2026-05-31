@@ -12,4 +12,8 @@
         ORDER BY record_date DESC
     </select>
 
+    <insert id="saveFrequency">
+        INSERT INTO word_frequency (frequency, word_id, record_date) VALUES (#{frequency}, #{id}, CURDATE())
+    </insert>
+
 </mapper>
