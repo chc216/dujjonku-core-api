@@ -20,7 +20,7 @@
         WHERE name = #{name}
     </select>
 
-    <insert id="saveWord" parameterType="com.example.core.word.service.dto.RefinedWordDto" useGeneratedKeys="true" keyProperty="id">
+    <insert id="saveWord" parameterType="com.example.core.word.infra.mapper.dto.WordInsertDto" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO word (name, meaning, example) VALUES (#{name}, #{meaning}, #{example})
     </insert>
 

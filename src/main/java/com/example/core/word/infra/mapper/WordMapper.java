@@ -10,5 +10,5 @@ import org.apache.ibatis.annotations.Param;
 public interface WordMapper {
     WordInfoMapperDto findById(@Param("id") Long id);
     Long findByName(String name);
-    Long saveWord(WordInsertDto dto);
+    void saveWord(WordInsertDto dto);
 }
