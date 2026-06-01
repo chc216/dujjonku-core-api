@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.core.word.infra.mapper.WordMapper">
+
+    <select id="findById" resultType="com.example.core.word.infra.mapper.dto.WordInfoMapperDto">
+        SELECT
+            id,
+            name,
+            meaning,
+            example
+        FROM word
+        WHERE id = #{id}
+    </select>
+
+    <select id="findByName" resultType="java.lang.Long">
+        SELECT
+            id
+        FROM word
+        WHERE name = #{name}
+    </select>
+
+    <insert id="saveWord" parameterType="com.example.core.word.infra.mapper.dto.WordInsertDto" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO word (name, meaning, example) VALUES (#{name}, #{meaning}, #{example})
+    </insert>
+
+</mapper>
