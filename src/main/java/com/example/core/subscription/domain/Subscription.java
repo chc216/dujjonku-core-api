@@ -6,6 +6,7 @@ import lombok.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name="subscription")
 public class Subscription {
 
     @Id
