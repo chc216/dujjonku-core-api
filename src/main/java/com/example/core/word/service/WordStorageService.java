@@ -23,9 +23,9 @@ public class WordStorageService {
     }
 
     @Transactional
-    public List<Long> saveWordList(List<RefinedWordDto> refinedWordDtos) {
+    public List<Long> saveWordList(List<RefinedWordDto> refinedWordList) {
         List<Long> savedIdList = new ArrayList<>();
-        for (RefinedWordDto dto : refinedWordDtos) {
+        for (RefinedWordDto dto : refinedWordList) {
             WordInsertDto insertDto = dto.toInsertDto();
             Long existId = wordMapper.findByName(insertDto.getName());
             if(existId == null) {
