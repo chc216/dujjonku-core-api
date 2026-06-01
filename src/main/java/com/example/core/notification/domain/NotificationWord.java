@@ -2,6 +2,7 @@ package com.example.core.notification.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -13,8 +14,8 @@ public class NotificationWord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String wordName;
-    private String definition;
+    private String name;
+    private String meaning;
     private String example;
-
+    private LocalDateTime createdAt;
 }

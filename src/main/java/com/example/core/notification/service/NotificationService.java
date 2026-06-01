@@ -43,8 +43,8 @@ public class NotificationService {
 
         for (int i = 0; i < todayWords.size(); i++) {
             NotificationTodayWord todayWord = todayWords.get(i);
-            String wordName = todayWord.getWord().getWordName();
-            String definition = todayWord.getWord().getDefinition();
+            String wordName = todayWord.getWord().getName();
+            String definition = todayWord.getWord().getMeaning();
             String example = todayWord.getWord().getExample();
 
             emailContent.append(i + 1).append(". ").append(wordName).append(" : ").append(definition).append("\n\n")
@@ -57,13 +57,13 @@ public class NotificationService {
             try {
                 SimpleMailMessage mailMessage = new SimpleMailMessage();
                 mailMessage.setTo(subscriber.getEmail());
-                mailMessage.setSubject("오늘이 단어가 도착했습니다.");
+                mailMessage.setSubject("오늘이 단어가 도착했습니다!");
                 mailMessage.setText(emailContent.toString());
 
                 mailSender.send(mailMessage);
                 System.out.println("메일 전송 성공 -> To " + subscriber.getEmail());
             }catch (Exception e) {
-                System.out.println("메리 발송 실패 -> To " + subscriber.getEmail() + "(사유 : "+ e.getMessage() +")");
+                System.out.println("메일 발송 실패 -> To " + subscriber.getEmail() + "(사유 : "+ e.getMessage() +")");
             }
         }
         System.out.println("=============총 : " + subscribers.size() + "명 발송 완료=====");
