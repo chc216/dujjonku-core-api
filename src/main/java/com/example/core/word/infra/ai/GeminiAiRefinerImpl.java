@@ -23,8 +23,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class GeminiAiRefinerImpl implements AiRefiner {
     private final ObjectMapper objectMapper;
-    @Value("${google.gemini.api-key}")
-    String apiKey;
+    private final Client client;
 
 
     @Override
@@ -35,7 +34,6 @@ public class GeminiAiRefinerImpl implements AiRefiner {
             frequencyMap.put(rawDataDto.getName(), rawDataDto.getFrequency());
         }
 
-        Client client = Client.builder().apiKey(apiKey).build();
         ImmutableList<SafetySetting> safetySettings = ImmutableList.of(
                 SafetySetting.builder()
                         .category(HarmCategory.Known.HARM_CATEGORY_HATE_SPEECH) // 혐오 발언
