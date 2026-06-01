@@ -1,6 +1,6 @@
 package com.example.core.word.controller;
 
-import com.example.core.word.controller.dto.ReportResponseDto;
+import com.example.core.word.service.dto.WordReportDto;
 import com.example.core.word.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +19,7 @@ public class ReportController {
     }
 
     @GetMapping("/report/{id}")
-    public ReportResponseDto report(@PathVariable String id) {
+    public WordReportDto report(@PathVariable String id) {
         return service.getWordReport(id);
     }
 }

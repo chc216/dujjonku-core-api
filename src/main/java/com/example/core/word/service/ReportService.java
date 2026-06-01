@@ -3,7 +3,7 @@ package com.example.core.word.service;
 import com.example.core.word.domain.Frequency;
 import com.example.core.word.domain.Word;
 import com.example.core.word.infra.mapper.WordMapper;
-import com.example.core.word.controller.dto.ReportResponseDto;
+import com.example.core.word.service.dto.WordReportDto;
 import com.example.core.word.infra.mapper.FrequencyMapper;
 import com.example.core.word.infra.mapper.dto.WordInfoMapperDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class ReportService {
     }
 
     @Transactional
-    public ReportResponseDto getWordReport(String id) {
+    public WordReportDto getWordReport(String id) {
         Long wordId = Long.valueOf(id);
         WordInfoMapperDto wordInfoMapperDto = wordMapper.findById(wordId);
         List<Integer> freqList = frequencyMapper.getFrequencyList(84, wordId);
@@ -38,6 +38,6 @@ public class ReportService {
                 .frequency(frequency).build();
         String trend = word.calculateTrend();
         List<Integer> weeklyList = word.getWeeklyFrequency();
-        return new ReportResponseDto(word, trend,weeklyList);
+        return new WordReportDto(word, trend,weeklyList);
     }
 }
