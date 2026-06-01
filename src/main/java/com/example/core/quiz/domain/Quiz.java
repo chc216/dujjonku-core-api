@@ -9,6 +9,7 @@ import org.hibernate.annotations.SQLRestriction;//단어 삭제된 것들 제외
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SQLRestriction("deleted_at IS NULL") //삭제 안된 퀴즈들만 가져옴.
+@Table(name="quiz")
 public class Quiz {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

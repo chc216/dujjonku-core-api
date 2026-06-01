@@ -28,7 +28,7 @@ public class NotificationService {
     private final JavaMailSender mailSender;
 
     @Transactional
-    @Scheduled(cron = "*/10 * * * * *")
+    @Scheduled(cron = "0 0 9 * * *")
     public void send() {
         List<Subscription> subscribers = subscriptionRepository.findByConsentTrue();
         LocalDate today = LocalDate.now();
