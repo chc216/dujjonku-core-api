@@ -9,5 +9,5 @@ import java.util.List;
 @Mapper
 public interface FrequencyMapper {
     List<Integer> getFrequencyList(@Param("count") Integer count, @Param("id") Long id);
-    void saveFrequency(Integer frequency, Long id);
+    void saveFrequency(@Param("frequency") Integer frequency, @Param("id") Long id);
 }
