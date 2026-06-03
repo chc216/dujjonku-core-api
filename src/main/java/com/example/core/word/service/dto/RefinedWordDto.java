@@ -1,6 +1,6 @@
 package com.example.core.word.service.dto;
 
-import com.example.core.word.infra.mapper.dto.WordInsertDto;
+import com.example.core.word.infra.mysql.mapper.dto.WordInsertDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

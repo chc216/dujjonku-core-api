@@ -1,4 +1,4 @@
-package com.example.core.word.infra.mapper.dto;
+package com.example.core.word.infra.mysql.mapper.dto;
 
 import lombok.Getter;
 

@@ -1,9 +1,9 @@
 package com.example.core.word.service;
 
-import com.example.core.word.infra.mapper.dto.WordInsertDto;
+import com.example.core.word.infra.mysql.mapper.dto.WordInsertDto;
 import com.example.core.word.service.dto.RefinedWordDto;
-import com.example.core.word.infra.mapper.FrequencyMapper;
-import com.example.core.word.infra.mapper.WordMapper;
+import com.example.core.word.infra.mysql.mapper.FrequencyMapper;
+import com.example.core.word.infra.mysql.mapper.WordMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

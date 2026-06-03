@@ -1,7 +1,7 @@
-package com.example.core.word.infra.mapper;
+package com.example.core.word.infra.mysql.mapper;
 
-import com.example.core.word.infra.mapper.dto.WordInsertDto;
-import com.example.core.word.infra.mapper.dto.WordInfoMapperDto;
+import com.example.core.word.infra.mysql.mapper.dto.WordInsertDto;
+import com.example.core.word.infra.mysql.mapper.dto.WordInfoMapperDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
