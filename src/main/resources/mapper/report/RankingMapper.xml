@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.core.word.infra.mysql.mapper.RankingMapper">
+
+    <insert id="insertRankingList">
+        INSERT INTO ranking (word_id, name, meaning, example, trend, ranking_order, target_date)
+        VALUES
+        <foreach collection="rankingList" item="item" separator=",">
+            (
+            #{item.wordId},
+            #{item.name},
+            #{item.meaning},
+            #{item.example},
+            #{item.trend},
+            #{item.rank},
+             current_date
+            )
+        </foreach>
+    </insert>
+    <select id="findRankingListToday" resultType="com.example.core.word.service.dto.RankingDto">
+        SELECT
+            word_id,
+            name,
+            meaning,
+            example,
+            ranking_order as `rank`,
+            trend
+        FROM ranking
+        WHERE target_date = current_date
+        ORDER BY ranking_order asc
+    </select>
+</mapper>
