@@ -1,9 +1,9 @@
 package com.example.core.word.service;
 
 import com.example.core.word.service.dto.RefinedWordDto;
-import com.example.core.word.infra.mapper.FrequencyMapper;
-import com.example.core.word.infra.mapper.WordMapper;
-import com.example.core.word.infra.mapper.dto.WordInfoMapperDto;
+import com.example.core.word.infra.mysql.mapper.FrequencyMapper;
+import com.example.core.word.infra.mysql.mapper.WordMapper;
+import com.example.core.word.infra.mysql.mapper.dto.WordInfoMapperDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -53,7 +53,7 @@ class CrawlingServiceTest {
             Assertions.assertThat(findWord.getExample()).isEqualTo(request.getExample());
 
             //각 빈도 테이블에 저장 잘 됐는지 테스트
-            List<Integer> frequency = frequencyMapper.getFrequencyList(1, id);
+            List<Integer> frequency = frequencyMapper.findFrequencyListByWordId(1, id);
             Assertions.assertThat(frequency.get(0)).isEqualTo(request.getFrequency());
         }
 
