@@ -19,9 +19,18 @@
         FROM word
         WHERE name = #{name}
     </select>
+    <select id="findAllId" resultType="java.lang.Long">
+        SELECT
+            id
+        FROM word
+    </select>
 
     <insert id="saveWord" parameterType="com.example.core.word.infra.mysql.mapper.dto.WordInsertDto" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO word (name, meaning, example) VALUES (#{name}, #{meaning}, #{example})
     </insert>
+
+    <delete id="deleteAll">
+        delete from word
+    </delete>
 
 </mapper>
