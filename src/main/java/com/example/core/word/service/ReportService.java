@@ -32,7 +32,7 @@ public class ReportService {
                 .meaning(wordInfoMapperDto.getMeaning())
                 .example(wordInfoMapperDto.getExample())
                 .frequency(frequency).build();
-        String trend = word.calculateTrend();
+        String trend = frequency.calculateTrend();
         List<Integer> weeklyList = word.getWeeklyFrequency();
         return new WordReportDto(word, trend,weeklyList);
     }

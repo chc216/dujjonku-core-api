@@ -2,14 +2,13 @@ package com.example.core.word.service;
 
 
 import com.example.core.word.domain.Frequency;
-import com.example.core.word.domain.Word;
 import com.example.core.word.infra.mysql.mapper.FrequencyMapper;
 import com.example.core.word.infra.mysql.mapper.WordMapper;
 import com.example.core.word.service.dto.RankingDto;
+import com.example.core.word.infra.mysql.mapper.dto.RankingInfoDto;
 import com.example.core.word.infra.mysql.mapper.dto.WordFrequencyDto;
 import com.example.core.word.infra.mysql.mapper.dto.WordInfoMapperDto;
 import com.example.core.word.repository.RankingRepository;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,28 +32,24 @@ public class RankingService {
         //베스트는 리포지토리에서 1. dto변환의 책임 2. 인프라 의존성을 리포지토리에서 제거하는 것이다.
         List<WordFrequencyDto> todayFrequencyListAscending = frequencyMapper.findTodayFrequencyListAscending(20);
         List<RankingDto> rankingList = new ArrayList<>();
-        for(int i = 0; i < todayFrequencyListAscending.size(); i++){
-            WordFrequencyDto todayFrequency = todayFrequencyListAscending.get(i);
-            //N+1문제
-            Integer yesterday = frequencyMapper.findYesterdayFrequencyById(todayFrequency.getWordId());
+        for(int rank = 0; rank < todayFrequencyListAscending.size(); rank++){
+            Integer today = todayFrequencyListAscending.get(rank).getFrequency();
+            Long id = todayFrequencyListAscending.get(rank).getWordId();
+            //N+1문제 발생
+            Integer yesterday = frequencyMapper.findYesterdayFrequencyById(id);
             if (yesterday == null) {
                 yesterday = 0;
             }
-            //N+1문제
-            WordInfoMapperDto wordInfo = wordMapper.findById(todayFrequency.getWordId());
-            Word findWord = Word.builder()
-                    .frequency(new Frequency(List.of(todayFrequency.getFrequency(), yesterday)))
-                    .build();
-            String trend = findWord.calculateTrend();
-            RankingDto rankingInsertDto = RankingDto.builder()
-                    .wordId(wordInfo.getId())
-                    .name(wordInfo.getName())
-                    .meaning(wordInfo.getMeaning())
-                    .example(wordInfo.getExample())
-                    .rank(i)
-                    .trend(trend)
-                    .build();
-            rankingList.add(rankingInsertDto);
+            WordInfoMapperDto wordInfoMapperDto = wordMapper.findById(id);
+            Frequency frequency = new Frequency(List.of(today, yesterday));
+            String trend = frequency.calculateTrend();
+
+            rankingList.add(
+                    new RankingDto(wordInfoMapperDto.getId(), wordInfoMapperDto.getName(), wordInfoMapperDto.getMeaning(), wordInfoMapperDto.getExample(), rank, trend)
+            );
+
+
+
         }
 
         //2. 추상화된 리포지토리를 이용하여 업데이트 (추후 mysql -> redis로 바꿀 예정이기 때문에)
