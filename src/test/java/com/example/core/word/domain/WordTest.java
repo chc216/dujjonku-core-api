@@ -12,15 +12,15 @@ class WordTest {
     public void calculateTrendTest() {
         //given
         List<Integer> increasingList = List.of(300, 100);
-        Word hotWord = Word.builder().id(0L).name("testWord").meaning("test").frequency(new Frequency(increasingList)).build();
+        Frequency hot = new Frequency(increasingList);
         List<Integer> neutralList = List.of(30,32,30,30);
-        Word neutralWord = Word.builder().id(1L).name("testWord").meaning("test").frequency(new Frequency(neutralList)).build();
+        Frequency neutral = new Frequency(neutralList);
         List<Integer> decreasingList = List.of(200,1000,10,1);
-        Word coldWord = Word.builder().id(2L).name("testWord").meaning("test").frequency(new Frequency(decreasingList)).build();
+        Frequency cold = new Frequency(decreasingList);
         //when
-        String hotWordTrend = hotWord.calculateTrend();
-        String neutralWordTrend = neutralWord.calculateTrend();
-        String coldWordTrend = coldWord.calculateTrend();
+        String hotWordTrend = hot.calculateTrend();
+        String neutralWordTrend = neutral.calculateTrend();
+        String coldWordTrend = cold.calculateTrend();
         //then
         Assertions.assertThat(hotWordTrend).isEqualTo("hot");
         Assertions.assertThat(neutralWordTrend).isEqualTo("neutral");

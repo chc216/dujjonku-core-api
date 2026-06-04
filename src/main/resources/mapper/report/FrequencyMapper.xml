@@ -1,19 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.example.core.word.infra.mapper.FrequencyMapper">
+<mapper namespace="com.example.core.word.infra.mysql.mapper.FrequencyMapper">
 
-    <select id="getFrequencyList" resultType="java.lang.Integer">
+    <select id="findFrequencyListByWordId" resultType="java.lang.Integer">
         SELECT
             frequency
         FROM word_frequency
         WHERE word_id = #{id}
-          AND record_date > DATE_SUB(CURDATE(), INTERVAL #{count} DAY)
+          AND record_date > DATE_SUB(CURDATE(), INTERVAL #{size} DAY)
         ORDER BY record_date DESC
     </select>
 
     <insert id="saveFrequency">
         INSERT INTO word_frequency (frequency, word_id, record_date) VALUES (#{frequency}, #{id}, CURDATE())
     </insert>
+
+    <select id="findTodayFrequencyListAscending" resultType="com.example.core.word.infra.mysql.mapper.dto.WordFrequencyDto">
+        select frequency, word_id
+        from word_frequency
+        where record_date = current_date
+        order by frequency desc
+        limit #{size}
+    </select>
+
+    <select id="findYesterdayFrequencyById" resultType="java.lang.Integer">
+        select coalesce(max(frequency), 0)
+        from word_frequency
+        where record_date = current_date - interval 1 day
+          and word_id = #{id}
+    </select>
 
 </mapper>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.core.word.infra.mysql.mapper.TodayWordMapper">
+
+    <insert id="saveTodayWord" parameterType="com.example.core.word.infra.mysql.mapper.dto.WordInfoMapperDto">
+        INSERT INTO todayword (word_id, name, meaning, example) VALUES (#{id}, #{name}, #{meaning}, #{example})
+    </insert>
+
+    <delete id="deleteAll">
+        delete from todayword
+    </delete>
+    <select id="findAll" resultType="com.example.core.word.infra.mysql.mapper.dto.WordInfoMapperDto">
+        select * from todayword;
+    </select>
+
+</mapper>

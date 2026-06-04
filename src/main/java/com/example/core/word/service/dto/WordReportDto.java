@@ -1,4 +1,4 @@
-package com.example.core.word.controller.dto;
+package com.example.core.word.service.dto;
 
 import com.example.core.word.domain.Word;
 import lombok.Getter;
@@ -9,14 +9,14 @@ import java.util.Map;
 
 //service에서 조립 후 -> controller로 데이터 이동
 @Getter
-public class ReportResponseDto {
+public class WordReportDto {
     private Long id;
     private String name;
     private String example;
     private String trend;
     private Map<String, Integer> frequency;
 
-    public ReportResponseDto(Word word, String trend, List<Integer> weeklyFrequency) {
+    public WordReportDto(Word word, String trend, List<Integer> weeklyFrequency) {
         this.id = word.getId();
         this.name = word.getName();
         this.example = word.getExample();;

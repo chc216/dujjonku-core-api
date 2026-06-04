@@ -1,17 +1,14 @@
 package com.example.core.word.domain;
 
-import org.apache.ibatis.annotations.Param;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Frequency {
     private List<Integer> frequencyList;
-    private Integer size;
 
     public Frequency(List<Integer> frequencyList) {
         this.frequencyList = frequencyList;
-        this.size = frequencyList.size();
     }
 
 
@@ -45,5 +42,21 @@ public class Frequency {
             result.add(weeklyFrequencySum);
         }
         return result;
+    }
+
+    public String calculateTrend() {
+        int todayFreq = getToday();
+        int yesterdayFreq = getYesterday();
+        if (yesterdayFreq == 0) {
+            yesterdayFreq = 1;
+        }
+        double ratio = (double)todayFreq / yesterdayFreq;
+        if (ratio > 1.3) {
+            return "hot";
+        } else if (ratio > 0.8){
+            return "neutral";
+        } else {
+            return "cold";
+        }
     }
 }
