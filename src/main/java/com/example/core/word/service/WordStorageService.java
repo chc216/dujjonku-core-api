@@ -1,5 +1,6 @@
 package com.example.core.word.service;
 
+import com.example.core.word.infra.mysql.mapper.dto.RankingInfoDto;
 import com.example.core.word.infra.mysql.mapper.dto.WordInsertDto;
 import com.example.core.word.service.dto.RefinedWordDto;
 import com.example.core.word.infra.mysql.mapper.FrequencyMapper;
@@ -22,7 +23,7 @@ public class WordStorageService {
     public List<Long> saveWordList(List<RefinedWordDto> refinedWordList) {
         List<Long> savedIdList = new ArrayList<>();
         for (RefinedWordDto dto : refinedWordList) {
-            WordInsertDto insertDto = dto.toInsertDto();
+            WordInsertDto insertDto = toInsertDto(dto);
             Long existId = wordMapper.findByName(insertDto.getName());
             if(existId == null) {
                 wordMapper.saveWord(insertDto);
@@ -34,6 +35,10 @@ public class WordStorageService {
             savedIdList.add(existId);
         }
         return savedIdList;
+    }
+
+    public WordInsertDto toInsertDto(RefinedWordDto dto){
+        return new WordInsertDto(dto.getName(), dto.getMeaning(), dto.getExample());
     }
 
 

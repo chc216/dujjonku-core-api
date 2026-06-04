@@ -1,18 +1,19 @@
-package com.example.core.word.service.dto;
+package com.example.core.word.infra.mysql.mapper.dto;
 
-import com.example.core.word.infra.mysql.mapper.dto.WordInsertDto;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RefinedWordDto {
+public class RankingInfoDto {
+    private Long wordId;
     private String name;
     private String meaning;
     private String example;
-    @Setter
-    private Integer frequency;
+    private Integer rank;
+    private String trend;
 }

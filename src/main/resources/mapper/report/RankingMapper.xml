@@ -18,7 +18,7 @@
             )
         </foreach>
     </insert>
-    <select id="findRankingListToday" resultType="com.example.core.word.service.dto.RankingDto">
+    <select id="findRankingListToday" resultType="com.example.core.word.infra.mysql.mapper.dto.RankingInfoDto">
         SELECT
             word_id,
             name,
