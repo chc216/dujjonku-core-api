@@ -32,8 +32,12 @@ public class RankingService {
         //베스트는 리포지토리에서 1. dto변환의 책임 2. 인프라 의존성을 리포지토리에서 제거하는 것이다.
         List<WordFrequencyDto> todayFrequencyListAscending = frequencyMapper.findTodayFrequencyListAscending(20);
         List<RankingDto> rankingList = new ArrayList<>();
-        for (WordFrequencyDto todayFrequency : todayFrequencyListAscending) {
+        for(int i = 0; i < todayFrequencyListAscending.size(); i++){
+            WordFrequencyDto todayFrequency = todayFrequencyListAscending.get(i);
             Integer yesterday = frequencyMapper.findYesterdayFrequencyById(todayFrequency.getWordId());
+            if (yesterday == null) {
+                yesterday = 0;
+            }
             WordInfoMapperDto wordInfo = wordMapper.findById(todayFrequency.getWordId());
             Word findWord = Word.builder()
                     .frequency(new Frequency(List.of(todayFrequency.getFrequency(), yesterday)))
@@ -44,7 +48,7 @@ public class RankingService {
                     .name(wordInfo.getName())
                     .meaning(wordInfo.getMeaning())
                     .example(wordInfo.getExample())
-                    .rank(todayFrequencyListAscending.indexOf(todayFrequency))
+                    .rank(i)
                     .trend(trend)
                     .build();
             rankingList.add(rankingInsertDto);
