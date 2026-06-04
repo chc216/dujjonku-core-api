@@ -4,6 +4,7 @@ import com.example.core.word.infra.mysql.mapper.dto.WordInsertDto;
 import com.example.core.word.service.dto.RefinedWordDto;
 import com.example.core.word.infra.mysql.mapper.FrequencyMapper;
 import com.example.core.word.infra.mysql.mapper.WordMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,15 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class WordStorageService {
     private final WordMapper wordMapper;
     private final FrequencyMapper frequencyMapper;
-
-    @Autowired
-    public WordStorageService(WordMapper wordMapper, FrequencyMapper frequencyMapper) {
-        this.wordMapper = wordMapper;
-        this.frequencyMapper = frequencyMapper;
-    }
 
     @Transactional
     public List<Long> saveWordList(List<RefinedWordDto> refinedWordList) {

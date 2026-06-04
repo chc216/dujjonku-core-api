@@ -10,6 +10,7 @@ import com.example.core.word.infra.mysql.mapper.dto.WordFrequencyDto;
 import com.example.core.word.infra.mysql.mapper.dto.WordInfoMapperDto;
 import com.example.core.word.repository.RankingRepository;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Transactional
 public class RankingService {
     private final RankingRepository rankingRepository;
@@ -34,10 +35,12 @@ public class RankingService {
         List<RankingDto> rankingList = new ArrayList<>();
         for(int i = 0; i < todayFrequencyListAscending.size(); i++){
             WordFrequencyDto todayFrequency = todayFrequencyListAscending.get(i);
+            //N+1문제
             Integer yesterday = frequencyMapper.findYesterdayFrequencyById(todayFrequency.getWordId());
             if (yesterday == null) {
                 yesterday = 0;
             }
+            //N+1문제
             WordInfoMapperDto wordInfo = wordMapper.findById(todayFrequency.getWordId());
             Word findWord = Word.builder()
                     .frequency(new Frequency(List.of(todayFrequency.getFrequency(), yesterday)))

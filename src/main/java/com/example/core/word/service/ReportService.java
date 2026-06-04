@@ -6,6 +6,7 @@ import com.example.core.word.infra.mysql.mapper.WordMapper;
 import com.example.core.word.service.dto.WordReportDto;
 import com.example.core.word.infra.mysql.mapper.FrequencyMapper;
 import com.example.core.word.infra.mysql.mapper.dto.WordInfoMapperDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,15 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class ReportService {
     private final FrequencyMapper frequencyMapper;
     private final WordMapper wordMapper;
-
-    @Autowired
-    public ReportService(FrequencyMapper frequencyMapper, WordMapper wordMapper) {
-        this.frequencyMapper = frequencyMapper;
-        this.wordMapper = wordMapper;
-    }
 
     @Transactional
     public WordReportDto getWordReport(String id) {

@@ -4,13 +4,14 @@ package com.example.core.word.service;
 import com.example.core.word.service.dto.RawDataDto;
 import com.example.core.word.service.dto.RefinedWordDto;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class WordProcessFacade {
     private final WordStorageService wordStorageService;
     private final AiRefiner aiRefiner;

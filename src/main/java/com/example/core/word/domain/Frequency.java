@@ -1,6 +1,5 @@
 package com.example.core.word.domain;
 
-import org.apache.ibatis.annotations.Param;
 
 import java.util.ArrayList;
 import java.util.List;
