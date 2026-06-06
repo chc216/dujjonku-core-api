@@ -27,6 +27,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins("http://localhost:5173") //프론트엔드 주소 허용
                 .allowedMethods("GET",  "POST", "PUT", "DELETE", "PATCH",  "OPTIONS") // 허용할 HTTP 메서드
                 .allowedHeaders("*") // 모든 헤더 허용
+                .exposedHeaders("Authorization")
                 .allowCredentials(true) // 쿠키나 인증 헤더를 포함할 수 있도록 허용
                 .maxAge(3600); // Preflight 요청 캐싱 시간(1시간)
     }
