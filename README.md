@@ -9,7 +9,7 @@
 
 ### 1. 레포지토리 클론 및 빌드
 ```bash
-git clone [백엔드 깃허브 주소]
+git clone https://github.com/chc216/dujjonku-core-api.git
 
 cd dujjonku-backend
 
