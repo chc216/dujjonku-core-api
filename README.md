@@ -12,11 +12,16 @@
 git clone https://github.com/chc216/dujjonku-core-api.git
 
 cd dujjonku-backend
+```
+### 2. 도커(Docker) 컨테이너 실행
+먼저 Docker Desktop을 실행한 후, 아래 명령어로 MySQL 컨테이너를 구동합니다.
 
-**Docker Desktop 실행 후**
-
+참고 : MySQL 컨테이너는 로컬 3306 포트를 사용합니다.
+```bash
 docker-compose up -d
-
+```
+### 3. 백엔드 서버 실행
+```bash
 ./gradlew build
 
 ./gradlew bootRun
@@ -24,8 +29,7 @@ docker-compose up -d
 서버는 기본적으로 http://localhost:8080 포트에서 실행됩니다.
 
 
-
-### 2. 데이터베이스(MySQL) 초기 세팅 안내
+## 데이터베이스(MySQL) 초기 세팅 안내
 
 본 백엔드 서버는 프론트엔드 랜딩 페이지의 **'미니 퀴즈 조회(Retrieve)'** 및 **'알림 구독 삽입(Insert)'** 기능을 지원하기 위해 아래의 DB 테이블과 초기 데이터가 필요합니다. 
 
