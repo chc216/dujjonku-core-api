@@ -13,6 +13,10 @@ git clone [백엔드 깃허브 주소]
 
 cd dujjonku-backend
 
+**Docker Desktop 실행 후**
+
+docker-compose up -d
+
 ./gradlew build
 
 ./gradlew bootRun
