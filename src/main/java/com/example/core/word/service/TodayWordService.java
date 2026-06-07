@@ -35,7 +35,9 @@ public class TodayWordService {
             WordInfoMapperDto word = wordMapper.findById(id);
             todayWordMapper.saveTodayWord(word);
         }
-
-
+    }
+    @Transactional(readOnly = true)
+    public List<WordInfoMapperDto> getTodayWords() {
+        return todayWordMapper.findAll();
     }
 }
