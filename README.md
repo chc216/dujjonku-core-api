@@ -84,6 +84,9 @@ docker-compose up -d
 <div markdown="1">
 
 ```sql
+-- 데이터베이스 core_db 지정 필요 (use core_db)
+
+
 -- 기존 테이블이 존재할 경우 안전하게 삭제 (초기화용)
 DROP TABLE IF EXISTS quiz;
 DROP TABLE IF EXISTS subscription;
