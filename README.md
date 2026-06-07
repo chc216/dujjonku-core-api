@@ -3,6 +3,49 @@
 > **따라가기 벅찬 요즘 유행어, 한눈에 쉽게**
 > 세대 간 언어 장벽을 허물기 위한 유행어 사전 서비스 '두쫀쿠'의 백엔드(Spring Boot) 레포지토리입니다.
 
+
+---
+⚡ 실행 순서 요약 (Quick Start)
+처음 세팅하시는 분은 아래 순서대로 진행하면 됩니다.
+
+
+
+1. **사전 준비** — Docker Desktop, JDK 17 이상 설치 및 실행
+2. **레포지토리 클론** — `git clone` 후 프로젝트 폴더로 이동
+3. **.env 파일 생성** — 최상단(`core/.env`)에 `MYSQL_PASSWORD`, `API_KEY` 설정
+4. **MySQL 컨테이너 실행** — `docker-compose up -d`
+5. **DB 초기 세팅** — DB 클라이언트로 DDL/DML 쿼리 실행 (테이블 생성 + 퀴즈 더미)
+6. **백엔드 서버 실행** — `./gradlew build` 후 `./gradlew bootRun`
+7. **크롤링 더미 데이터 주입** — Postman으로 `POST http://localhost:8080/crawling`에 JSON 전송
+
+💡 각 단계의 상세 내용은 아래 섹션을 참고하세요.
+
+
+
+---
+
+## 사전 준비 사항 (Prerequisites)
+
+로컬에서 서버를 실행하기 전에 아래 항목이 설치되어 있어야 합니다.
+
+- **Docker Desktop** : MySQL 컨테이너 구동을 위해 반드시 사전에 설치 및 실행되어 있어야 합니다.
+- **JDK 17 이상** : Spring Boot 서버 빌드 및 실행에 필요합니다.
+
+> ⚠️ Docker가 설치/실행되어 있지 않으면 MySQL 컨테이너가 뜨지 않아 서버 연동이 불가능합니다.
+
+---
+
+## 환경 변수(.env) 설정
+
+프로젝트 최상단 경로(`core/`)에 `.env` 파일을 생성하고 아래 내용을 입력합니다.
+
+```
+MYSQL_PASSWORD=root
+API_KEY={제미나이 api키를 발급받아 작성}
+```
+
+> 💡 `.env` 파일은 반드시 최상단(`core/.env`) 경로에 위치해야 정상적으로 인식됩니다.
+
 ---
 
 ## 로컬 서버 실행 방법 (How to Run)
@@ -11,7 +54,7 @@
 ```bash
 git clone https://github.com/chc216/dujjonku-core-api.git
 
-cd dujjonku-backend
+cd dujjonku-core-api
 ```
 ### 2. 도커(Docker) 컨테이너 실행
 먼저 Docker Desktop을 실행한 후, 아래 명령어로 MySQL 컨테이너를 구동합니다.
@@ -31,19 +74,23 @@ docker-compose up -d
 
 ## 데이터베이스(MySQL) 초기 세팅 안내
 
-본 백엔드 서버는 프론트엔드 랜딩 페이지의 **'미니 퀴즈 조회(Retrieve)'** 및 **'알림 구독 삽입(Insert)'** 기능을 지원하기 위해 아래의 DB 테이블과 초기 데이터가 필요합니다. 
+본 백엔드 서버는 프론트엔드 랜딩 페이지의 **'미니 퀴즈 조회(Retrieve)'**   **'알림 구독 삽입(Insert)'**   **'랭킹 대시보드 및 단어 카드'** 기능을 지원하기 위해 아래의 DB 테이블과 초기 데이터가 필요합니다.
 
 로컬 환경에서 프론트엔드와 정상적으로 연동하기 위해, 사용하시는 DB 클라이언트 도구(MySQL Workbench, DBeaver, IntelliJ Database 등)를 통해 아래의 DDL 및 DML 쿼리를 먼저 실행해 주시기 바랍니다.
 
-> 💡 **참고 (퀴즈 랜덤 출제 시스템):**  랜딩 페이지에서는 미니 테스트용으로 1문제만 렌더링되지만, 실제 퀴즈 페이지로 진입 시 전체 퀴즈 풀에서 10문제를 랜덤으로 추출하여 제공합니다. 
+> 💡 **참고 (퀴즈 랜덤 출제 시스템):**  랜딩 페이지에서는 미니 테스트용으로 1문제만 렌더링되지만, 실제 퀴즈 페이지로 진입 시 전체 퀴즈 풀에서 10문제를 랜덤으로 추출하여 제공합니다.
 <details>
-<summary><b>클릭해서 DB 세팅 쿼리 보기 (테이블 생성 및 퀴즈 20개)</b></summary>
+<summary><b>클릭해서 DB 세팅 쿼리 보기</b></summary>
 <div markdown="1">
 
 ```sql
 -- 기존 테이블이 존재할 경우 안전하게 삭제 (초기화용)
 DROP TABLE IF EXISTS quiz;
 DROP TABLE IF EXISTS subscription;
+DROP TABLE IF EXISTS todayword;
+DROP TABLE IF EXISTS word_frequency;
+DROP TABLE IF EXISTS ranking;
+DROP TABLE IF EXISTS word;
 
 -- 1. 알림 구독자(Subscription) 테이블 생성
 CREATE TABLE subscription (
@@ -69,7 +116,51 @@ CREATE TABLE quiz (
     deleted_at DATETIME
 );
 
--- 3. 퀴즈 더미 데이터 삽입 (20문제)
+-- 3. 단어(Word) 테이블 생성
+CREATE TABLE word (
+    id            BIGINT       NOT NULL AUTO_INCREMENT,
+    name          VARCHAR(255) DEFAULT NULL,
+    meaning       VARCHAR(255) DEFAULT NULL,
+    example       VARCHAR(255) DEFAULT NULL,
+    created_at    DATETIME     DEFAULT CURRENT_TIMESTAMP,
+    like_count    BIGINT       NOT NULL DEFAULT 0,
+    dislike_count BIGINT       NOT NULL DEFAULT 0,
+    PRIMARY KEY (id)
+);
+
+-- 4. 단어 빈도(Word Frequency) 테이블 생성
+CREATE TABLE word_frequency (
+    id          BIGINT NOT NULL AUTO_INCREMENT,
+    word_id     BIGINT NOT NULL,
+    record_date DATE   NOT NULL,
+    frequency   INT    DEFAULT 0,
+    PRIMARY KEY (id)
+);
+
+-- 5. 랭킹(Ranking) 테이블 생성
+CREATE TABLE ranking (
+    id            BIGINT       NOT NULL AUTO_INCREMENT,
+    word_id       BIGINT       NOT NULL,
+    name          VARCHAR(255) NOT NULL,
+    meaning       TEXT,
+    example       TEXT,
+    trend         VARCHAR(255) DEFAULT NULL,
+    ranking_order INT          NOT NULL,
+    target_date   DATE         NOT NULL,
+    PRIMARY KEY (id)
+);
+
+-- 6. 오늘의 단어(Todayword) 테이블 생성
+CREATE TABLE todayword (
+    id      BIGINT       NOT NULL AUTO_INCREMENT,
+    word_id BIGINT       DEFAULT NULL,
+    name    VARCHAR(255) DEFAULT NULL,
+    meaning VARCHAR(255) DEFAULT NULL,
+    example VARCHAR(255) DEFAULT NULL,
+    PRIMARY KEY (id)
+);
+
+-- 7. 퀴즈 더미 데이터 삽입 (20문제)
 INSERT INTO quiz (word_id, admin_id, question, answer_num, option1, option2, option3, option4, explanation, created_at) VALUES 
 (1, 1, '최근 젊은 세대 사이에서 "오히려 좋아"를 뜻하는 유행어는?', 2, '그저 빛', '럭키비키', '폼 미쳤다', '알잘딱깔센', '"원영적 사고"에서 파생된 말로, 긍정적 해석을 의미합니다.', NOW()),
 (2, 1, '"중요한 것은 꺾이지 않는 마음"을 줄여서 부르는 말은?', 3, '중꺾마', '중마꺾', '중꺾마', '꺾중마', '2022년 롤드컵 데프트 선수의 인터뷰에서 유래했습니다.', NOW()),
@@ -91,3 +182,164 @@ INSERT INTO quiz (word_id, admin_id, question, answer_num, option1, option2, opt
 (18, 1, '갓생(God+인생)의 반대말로 잉여롭게 보내는 삶은?', 1, '혐생', '노생', '망생', '빈생', '현실 생활이 힘들고 싫을 때 자조적으로 부르는 말입니다.', NOW()),
 (19, 1, '무엇이든 할 수 있다는 긍정적인 의미의 "중꺾마" 변형은?', 4, '중마', '중마꺾', '꺾지마', '중꺾그마', '"중요한 것은 꺾였는데도 그냥 하는 마음"이라는 변형 유행어입니다.', NOW()),
 (20, 1, '엄마 카드, 아빠 카드를 줄여서 부르는 말은?', 2, '엄카아카', '엄카/아카', '마카파카', '부카', '부모님의 카드로 결제할 때 흔히 사용하는 말입니다.', NOW());
+```
+
+</div>
+</details>
+
+---
+
+## 더미 데이터 주입 안내 (크롤링 데이터)
+
+크롤링 서버는 현재 개발 중인 관계로, 단어/랭킹/오늘의 단어 등 나머지 기능을 정상적으로 사용하려면 더미 데이터를 수동으로 주입해야 합니다.
+
+**[Postman](https://www.postman.com/)** 등의 API 도구를 이용해 아래와 같이 요청을 보내주세요.
+
+- **Method** : `POST`
+- **URL** : `http://localhost:8080/crawling`
+- **Header** : `Content-Type: application/json`
+- **Body (raw / JSON)** : 아래 JSON 데이터를 그대로 첨부
+
+> ⚠️ 이 요청을 보내야 더미 데이터가 적재되어 단어 조회·랭킹·오늘의 단어 등의 기능을 사용할 수 있습니다.
+
+<details>
+<summary><b>클릭해서 크롤링 더미 데이터(JSON) 보기</b></summary>
+<div markdown="1">
+
+```json
+[
+  {
+    "keyword": "럭키비키",
+    "platformFrequencies": {
+      "twitter": 4500,
+      "instagram": 3200,
+      "youtube": 2800,
+      "community": 1500
+    },
+    "originalExamples": [
+      "오늘 비 와서 시원하니까 완전 럭키비키잖아!",
+      "오히려 좋아! 럭키비키 마인드로 가자"
+    ]
+  },
+  {
+    "keyword": "추구미",
+    "platformFrequencies": {
+      "twitter": 3800,
+      "instagram": 4100,
+      "youtube": 1900,
+      "community": 1200
+    },
+    "originalExamples": [
+      "요즘 내 추구미는 약간 이런 시크한 느낌이야",
+      "이 코디 완전 내 추구미 저격함"
+    ]
+  },
+  {
+    "keyword": "스불재",
+    "platformFrequencies": {
+      "twitter": 5200,
+      "instagram": 800,
+      "youtube": 1100,
+      "community": 3400
+    },
+    "originalExamples": [
+      "일정 너무 무리해서 잡았나... 또 스불재 겪는 중",
+      "이번 과제는 완전 스불재야"
+    ]
+  },
+  {
+    "keyword": "분좋카",
+    "platformFrequencies": {
+      "twitter": 1200,
+      "instagram": 5500,
+      "youtube": 2100,
+      "community": 1800
+    },
+    "originalExamples": [
+      "주말에 친구랑 갈 연남동 분좋카 추천 좀!",
+      "오랜만에 분좋카 가서 힐링하고 왔어"
+    ]
+  },
+  {
+    "keyword": "점메추",
+    "platformFrequencies": {
+      "twitter": 2900,
+      "instagram": 1500,
+      "youtube": 800,
+      "community": 4200
+    },
+    "originalExamples": [
+      "오늘 진짜 뭐 먹지? 점메추 받습니다",
+      "비 오는 날엔 역시 짬뽕이지. 점메추 성공!"
+    ]
+  },
+  {
+    "keyword": "갓생",
+    "platformFrequencies": {
+      "twitter": 3100,
+      "instagram": 4800,
+      "youtube": 3500,
+      "community": 2200
+    },
+    "originalExamples": [
+      "내일부터 아침 6시에 일어나서 갓생 산다 진짜",
+      "요즘 갓생 살기 너무 힘들어서 포기할까 고민 중"
+    ]
+  },
+  {
+    "keyword": "억까",
+    "platformFrequencies": {
+      "twitter": 2500,
+      "instagram": 700,
+      "youtube": 4600,
+      "community": 5800
+    },
+    "originalExamples": [
+      "이건 솔직히 너무 억까 아니냐?",
+      "억까 좀 그만해라, 팩트만 놓고 얘기하자"
+    ]
+  },
+  {
+    "keyword": "너 T야",
+    "platformFrequencies": {
+      "twitter": 2200,
+      "instagram": 2700,
+      "youtube": 4100,
+      "community": 3300
+    },
+    "originalExamples": [
+      "거기서 공감을 안 해준다고? 너 T야?",
+      "이 상황에서 그런 팩트폭력... 혹시 너 T야?"
+    ]
+  },
+  {
+    "keyword": "캘박",
+    "platformFrequencies": {
+      "twitter": 3600,
+      "instagram": 2100,
+      "youtube": 500,
+      "community": 1700
+    },
+    "originalExamples": [
+      "우리 다음 모임은 15일로 캘박하자!",
+      "일단 그 날짜로 캘박해두고 나중에 다시 얘기해"
+    ]
+  },
+  {
+    "keyword": "알빠노",
+    "platformFrequencies": {
+      "twitter": 1900,
+      "instagram": 900,
+      "youtube": 4300,
+      "community": 6100
+    },
+    "originalExamples": [
+      "내일 모레가 시험인데 알빠노?",
+      "그 사람이 뭐라고 하든 내 알빠노"
+    ]
+  }
+]
+```
+
+</div>
+</details>
