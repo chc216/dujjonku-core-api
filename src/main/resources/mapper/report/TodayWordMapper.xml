@@ -11,7 +11,7 @@
         delete from todayword
     </delete>
     <select id="findAll" resultType="com.example.core.word.infra.mysql.mapper.dto.WordInfoMapperDto">
-        select * from todayword;
+        SELECT word_id AS id, name, meaning, example FROM todayword
     </select>
 
 </mapper>

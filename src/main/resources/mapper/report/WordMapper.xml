@@ -33,4 +33,29 @@
         delete from word
     </delete>
 
+    <select id="existById" parameterType="long" resultType="boolean">
+        SELECT EXISTS (
+            SELECT 1
+            FROM word
+            WHERE id = #{id}
+        )
+    </select>
+    <insert id="increaseLikeById">
+        UPDATE word SET like_count = like_count + 1 WHERE id = #{id}
+    </insert>
+    <insert id="increaseDislikeById">
+        UPDATE word SET dislike_count = dislike_count + 1 WHERE id = #{id}
+    </insert>
+
+    <select id="findLikeById" resultType="Long">
+        select like_count from word where id = #{id}
+    </select>
+    <select id="findDislikeById" resultType="Long">
+        select dislike_count from word where id = #{id}
+    </select>
+
+    <select id="findVoteById" resultType="com.example.core.word.service.dto.VoteDto">
+        select like_count, dislike_count from word where id = #{id}
+    </select>
+
 </mapper>

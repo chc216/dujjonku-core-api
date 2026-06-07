@@ -2,6 +2,7 @@ package com.example.core.word.infra.mysql.mapper;
 
 import com.example.core.word.infra.mysql.mapper.dto.WordInsertDto;
 import com.example.core.word.infra.mysql.mapper.dto.WordInfoMapperDto;
+import com.example.core.word.service.dto.VoteDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -15,4 +16,13 @@ public interface WordMapper {
     void saveWord(WordInsertDto dto);
     List<Long> findAllId();
     void deleteAll();
+    boolean existById(@Param("id") Long id);
+    void increaseLikeById(@Param("id") Long id);
+    void increaseDislikeById(@Param("id") Long id);
+
+    Long findLikeById(@Param("id") Long id);
+
+    Long findDislikeById(@Param("id") Long id);
+
+    VoteDto findVoteById(@Param("id") Long id);
 }
