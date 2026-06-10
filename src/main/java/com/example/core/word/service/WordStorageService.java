@@ -38,7 +38,7 @@ public class WordStorageService {
     }
 
     public WordInsertDto toInsertDto(RefinedWordDto dto){
-        return new WordInsertDto(dto.getName(), dto.getMeaning(), dto.getExample());
+        return new WordInsertDto(dto.getName(), dto.getMeaning(), dto.getExample(), dto.getScenario());
     }
 
 

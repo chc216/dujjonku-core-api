@@ -13,6 +13,7 @@ public class RefinedWordDto {
     private String name;
     private String meaning;
     private String example;
+    private String scenario;
     @Setter
     private Integer frequency;
 }

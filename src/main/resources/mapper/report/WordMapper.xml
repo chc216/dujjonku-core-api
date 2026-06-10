@@ -8,7 +8,8 @@
             id,
             name,
             meaning,
-            example
+            example,
+            scenario
         FROM word
         WHERE id = #{id}
     </select>
@@ -26,7 +27,7 @@
     </select>
 
     <insert id="saveWord" parameterType="com.example.core.word.infra.mysql.mapper.dto.WordInsertDto" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO word (name, meaning, example) VALUES (#{name}, #{meaning}, #{example})
+        INSERT INTO word (name, meaning, example, scenario) VALUES (#{name}, #{meaning}, #{example}, #{scenario})
     </insert>
 
     <delete id="deleteAll">

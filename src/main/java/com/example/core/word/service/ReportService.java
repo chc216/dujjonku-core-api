@@ -22,33 +22,30 @@ public class ReportService {
     private final WordMapper wordMapper;
 
     @Transactional
-    public WordReportDto getWordReport(Long wordId) {
-        WordInfoMapperDto wordInfoMapperDto = wordMapper.findById(wordId);
-        List<Integer> freqList = frequencyMapper.findFrequencyListByWordId(84, wordId);
+    public WordReportDto getWordReport(Long wordId, Integer weekSize) {
+        if (!wordMapper.existById(wordId)) {
+            throw new EntityNotFoundException("Word not found");
+        }
+        WordInfoMapperDto word = wordMapper.findById(wordId);
+        List<Integer> freqList = frequencyMapper.findFrequencyListByWordId(weekSize * 7, wordId);
         Frequency frequency = new Frequency(freqList);
-        Word word = Word
-                .builder()
-                .id(wordInfoMapperDto.getId())
-                .name(wordInfoMapperDto.getName())
-                .meaning(wordInfoMapperDto.getMeaning())
-                .example(wordInfoMapperDto.getExample())
-                .frequency(frequency).build();
         String trend = frequency.calculateTrend();
-        List<Integer> weeklyList = word.getWeeklyFrequency();
-        return new WordReportDto(word, trend,weeklyList);
+        List<Integer> weeklyList = frequency.convertToWeekly(weekSize);
+        return WordReportDto.from(word, weeklyList, trend);
     }
 
     @Transactional
     public Long increaseLike(Long id) {
-        if(!wordMapper.existById(id)) {
+        if (!wordMapper.existById(id)) {
             throw new EntityNotFoundException("Word not found");
         }
         wordMapper.increaseLikeById(id);
         return wordMapper.findLikeById(id);
     }
+
     @Transactional
     public Long increaseDislike(Long id) {
-        if(!wordMapper.existById(id)) {
+        if (!wordMapper.existById(id)) {
             throw new EntityNotFoundException("Word not found");
         }
         wordMapper.increaseDislikeById(id);
@@ -57,7 +54,7 @@ public class ReportService {
 
     @Transactional
     public VoteDto getVoteById(Long id) {
-        if(!wordMapper.existById(id)) {
+        if (!wordMapper.existById(id)) {
             throw new EntityNotFoundException("Word not found");
         }
         return wordMapper.findVoteById(id);
