@@ -15,6 +15,7 @@ public class MysqlRankingRepositoryImpl implements RankingRepository {
     private final RankingMapper rankingMapper;
     @Override
     public void update(List<RankingDto> list) {
+        rankingMapper.deleteAll();
         List<RankingInfoDto> insertList = list.stream().map(this::toInsert).toList();
         rankingMapper.insertRankingList(insertList);
     }

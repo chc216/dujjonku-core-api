@@ -47,9 +47,6 @@ public class RankingService {
             rankingList.add(
                     new RankingDto(wordInfoMapperDto.getId(), wordInfoMapperDto.getName(), wordInfoMapperDto.getMeaning(), wordInfoMapperDto.getExample(), rank, trend)
             );
-
-
-
         }
 
         //2. 추상화된 리포지토리를 이용하여 업데이트 (추후 mysql -> redis로 바꿀 예정이기 때문에)
