@@ -10,4 +10,5 @@ public class WordInfoMapperDto {
     private String name;
     private String meaning;
     private String example;
+    private String scenario;
 }

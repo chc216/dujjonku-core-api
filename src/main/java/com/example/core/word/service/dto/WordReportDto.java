@@ -1,6 +1,10 @@
 package com.example.core.word.service.dto;
 
+import com.example.core.word.domain.Frequency;
 import com.example.core.word.domain.Word;
+import com.example.core.word.infra.mysql.mapper.dto.WordInfoMapperDto;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.util.LinkedHashMap;
@@ -9,28 +13,33 @@ import java.util.Map;
 
 //service에서 조립 후 -> controller로 데이터 이동
 @Getter
+@Builder
+@AllArgsConstructor
 public class WordReportDto {
     private Long id;
     private String name;
     private String example;
     private String trend;
     private Map<String, Integer> frequency;
+    private String meaning;
+    private String scenario;
 
-    public WordReportDto(Word word, String trend, List<Integer> weeklyFrequency) {
-        this.id = word.getId();
-        this.name = word.getName();
-        this.example = word.getExample();;
-        this.trend = trend;
-        this.frequency = convertWeeklyFrequency(weeklyFrequency);
+    static public WordReportDto from(WordInfoMapperDto wordInfoMapperDto, List<Integer> freqeuency, String trend) {
+        return WordReportDto.builder()
+                .id(wordInfoMapperDto.getId())
+                .name(wordInfoMapperDto.getName())
+                .example(wordInfoMapperDto.getExample())
+                .trend(trend).frequency(convertToMap(freqeuency))
+                .meaning(wordInfoMapperDto.getMeaning())
+                .scenario(wordInfoMapperDto.getScenario())
+                .build();
     }
 
-    private Map<String, Integer> convertWeeklyFrequency(List<Integer> list) {
+    static public Map<String, Integer> convertToMap(List<Integer> list) {
         Map<String, Integer> converted = new LinkedHashMap<>();
-        for(int i = 0; i < list.size(); i++) {
-            converted.put("week" + (i+1), list.get(i));
+        for (int i = 0; i < list.size(); i++) {
+            converted.put("week" + (i + 1), list.get(i));
         }
         return converted;
     }
-
-
 }

@@ -21,7 +21,7 @@ public class ReportController {
 
     @GetMapping("/report/{id}")
     public WordReportDto report(@PathVariable String id) {
-        return service.getWordReport(Long.valueOf(id));
+        return service.getWordReport(Long.valueOf(id), 12);
     }
 
     @PostMapping("/{id}/like")
