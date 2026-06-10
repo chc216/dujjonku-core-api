@@ -125,6 +125,7 @@ CREATE TABLE word (
     name          VARCHAR(255) DEFAULT NULL,
     meaning       VARCHAR(255) DEFAULT NULL,
     example       VARCHAR(255) DEFAULT NULL,
+    scenario      VARCHAR(255) DEFAULT NULL,
     created_at    DATETIME     DEFAULT CURRENT_TIMESTAMP,
     like_count    BIGINT       NOT NULL DEFAULT 0,
     dislike_count BIGINT       NOT NULL DEFAULT 0,
