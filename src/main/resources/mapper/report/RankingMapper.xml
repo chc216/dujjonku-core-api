@@ -3,6 +3,9 @@
 
 <mapper namespace="com.example.core.word.infra.mysql.mapper.RankingMapper">
 
+    <delete id="deleteAll">
+        DELETE FROM ranking;
+    </delete>
     <insert id="insertRankingList">
         INSERT INTO ranking (word_id, name, meaning, example, trend, ranking_order, target_date)
         VALUES
