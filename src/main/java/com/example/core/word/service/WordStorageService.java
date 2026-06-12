@@ -29,6 +29,7 @@ public class WordStorageService {
                 wordMapper.saveWord(insertDto);
                 existId = insertDto.getId();
             }
+
             Integer frequency = dto.getFrequency();
             frequencyMapper.saveFrequency(frequency, existId);
 

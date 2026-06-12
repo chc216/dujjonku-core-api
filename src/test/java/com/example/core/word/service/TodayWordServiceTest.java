@@ -29,7 +29,8 @@ class TodayWordServiceTest {
     void setUp() {
         wordMapper.deleteAll();
         for (int i = 1; i <= 10; i++) {
-            wordMapper.saveWord(new WordInsertDto("test" + i, "meaning" + i, "example" + i));
+            wordMapper.saveWord(new WordInsertDto("test" + i, "meaning" + i, "example" + i, "scenario" + i));
+            
         }
     }
 
@@ -46,8 +47,6 @@ class TodayWordServiceTest {
         }
 
     }
-
-
 
 
 }

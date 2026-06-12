@@ -2,6 +2,7 @@ package com.example.core.word.service;
 
 import com.example.core.word.infra.mysql.mapper.TodayWordMapper;
 import com.example.core.word.infra.mysql.mapper.WordMapper;
+import com.example.core.word.infra.mysql.mapper.dto.TodayWordDto;
 import com.example.core.word.infra.mysql.mapper.dto.WordInfoMapperDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -37,7 +38,7 @@ public class TodayWordService {
         }
     }
     @Transactional(readOnly = true)
-    public List<WordInfoMapperDto> getTodayWords() {
+    public List<TodayWordDto> getTodayWords() {
         return todayWordMapper.findAll();
     }
 }

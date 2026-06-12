@@ -1,5 +1,6 @@
 package com.example.core.word.controller.dto;
 
+import com.example.core.word.infra.mysql.mapper.dto.TodayWordDto;
 import com.example.core.word.infra.mysql.mapper.dto.WordInfoMapperDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +15,7 @@ public class TodayWordResponse {
     private String meaning;
     private String example;
 
-    public static TodayWordResponse from(WordInfoMapperDto dto) {
+    public static TodayWordResponse from(TodayWordDto dto) {
         return new TodayWordResponse(
                 dto.getId(),
                 dto.getName(),
