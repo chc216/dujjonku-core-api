@@ -16,6 +16,7 @@ public class WordProcessFacade {
     private final WordStorageService wordStorageService;
     private final AiRefiner aiRefiner;
     private final RankingService rankingService;
+    private final TodayWordService todayWordService;
 
 
     @Transactional //나중에 수정해야함 ai api때문에 디비를 계속 잡고 있게 되는데 어차피 하루에 한번만 실행되는거니까 나중에 리팩토링할 것
@@ -24,6 +25,7 @@ public class WordProcessFacade {
         List<RefinedWordDto> refinedWordDtoList = aiRefiner.refine(rawDataList);
         wordStorageService.saveWordList(refinedWordDtoList);
         rankingService.updateRanking();
+        todayWordService.updateTodayWord();
     }
 
 
