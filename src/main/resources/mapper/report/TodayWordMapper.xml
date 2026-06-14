@@ -10,8 +10,8 @@
     <delete id="deleteAll">
         delete from todayword
     </delete>
-    <select id="findAll" resultType="com.example.core.word.infra.mysql.mapper.dto.WordInfoMapperDto">
-        SELECT word_id AS id, name, meaning, example FROM todayword
+    <select id="findAll" resultType="com.example.core.word.infra.mysql.mapper.dto.TodayWordDto">
+        SELECT word_id as id, name, meaning, example FROM todayword
     </select>
 
 </mapper>

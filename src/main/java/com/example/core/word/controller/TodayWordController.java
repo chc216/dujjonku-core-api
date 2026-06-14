@@ -1,5 +1,7 @@
 package com.example.core.word.controller;
 import com.example.core.word.controller.dto.TodayWordResponse;
+import com.example.core.word.infra.mysql.mapper.dto.TodayWordDto;
+import com.example.core.word.infra.mysql.mapper.dto.WordInfoMapperDto;
 import com.example.core.word.service.TodayWordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +17,8 @@ public class TodayWordController {
 
     @GetMapping("/today")
     public List<TodayWordResponse> getTodayWords() {
-        return todayWordService.getTodayWords().stream()
+        List<TodayWordDto> todayWords = todayWordService.getTodayWords();
+        return todayWords.stream()
                 .map(TodayWordResponse::from)
                 .toList();
     }
