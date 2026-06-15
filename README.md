@@ -88,12 +88,15 @@ docker-compose up -d
 
 
 -- 기존 테이블이 존재할 경우 안전하게 삭제 (초기화용)
+SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS quiz;
 DROP TABLE IF EXISTS subscription;
 DROP TABLE IF EXISTS todayword;
 DROP TABLE IF EXISTS word_frequency;
 DROP TABLE IF EXISTS ranking;
-DROP TABLE IF EXISTS word;
+DROP TABLE IF EXISTS admin;
+DROP TABLE IF EXISTS today_word;
+SET FOREIGN_KEY_CHECKS = 1;
 
 -- 1. 알림 구독자(Subscription) 테이블 생성
 CREATE TABLE subscription (
@@ -164,7 +167,23 @@ CREATE TABLE todayword (
     PRIMARY KEY (id)
 );
 
--- 7. 퀴즈 더미 데이터 삽입 (20문제)
+--7. 알림발송용 오늘의 단어 테이블 생성
+CREATE TABLE today_word (
+    id           BIGINT NOT NULL AUTO_INCREMENT,
+    word_id      BIGINT DEFAULT NULL,
+    display_date DATE   NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (word_id) REFERENCES word(id) ON DELETE CASCADE
+);
+--8. 관리자 테이블 생성
+CREATE TABLE admin (
+    id       BIGINT AUTO_INCREMENT PRIMARY KEY,
+    login_id VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    name     VARCHAR(255)
+);
+
+-- 8. 퀴즈 더미 데이터 삽입 (20문제)
 INSERT INTO quiz (word_id, admin_id, question, answer_num, option1, option2, option3, option4, explanation, created_at) VALUES 
 (1, 1, '최근 젊은 세대 사이에서 "오히려 좋아"를 뜻하는 유행어는?', 2, '그저 빛', '럭키비키', '폼 미쳤다', '알잘딱깔센', '"원영적 사고"에서 파생된 말로, 긍정적 해석을 의미합니다.', NOW()),
 (2, 1, '"중요한 것은 꺾이지 않는 마음"을 줄여서 부르는 말은?', 3, '중꺾마', '중마꺾', '중꺾마', '꺾중마', '2022년 롤드컵 데프트 선수의 인터뷰에서 유래했습니다.', NOW()),
@@ -195,6 +214,22 @@ INSERT INTO todayword (word_id, name, meaning, example) VALUES
 (3, '스불재', '''스스로 불러온 재앙''의 줄임말로, 자신이 벌인 일 때문에 스스로 곤란해지는 상황.', '일정 너무 무리해서 잡았나... 또 스불재 겪는 중.'),
 (6, '갓생', '신(God)과 인생의 합성어로, 부지런하고 생산적이며 모범이 될 만한 성실한 삶.', '내일부터 아침 6시에 일어나서 갓생 산다 진짜.'),
 (9, '캘박', '''캘린더 박제''의 줄임말로, 약속이나 일정을 잊지 않도록 캘린더에 미리 입력해 고정하는 행위.', '우리 다음 모임은 15일로 캘박하자!');
+
+-- 관리자 테이블 데이터 삽입
+INSERT INTO admin (login_id, password, name) VALUES
+('admin01', '1234', '최현철'),
+('admin02', '1234', '박재광'),
+('admin03', '1234', '김진영');
+
+-- 구독자 테이블 임시 데이터 삽입
+INSERT INTO subscription (email, consent) VALUES
+('dujjonku@cbnu.ac.kr', true),
+('hello_trend@example.com', true);
+
+-- 알림 발송용 오늘의 단어 참조 데이터 삽입
+INSERT INTO today_word (word_id, display_date) VALUES
+(3, '2026-06-15');
+
 ```
 
 </div>
